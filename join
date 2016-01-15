@@ -1,0 +1,30 @@
+//left outer join
+SELECT mytest_article.* , mytest_config.* FROM mytest_article LEFT JOIN mytest_config ON mytest_article.id=mytest_config.id
+
+//right outer JOIN
+SELECT mytest_article.* , mytest_config.* FROM mytest_article RIGHT JOIN mytest_config ON mytest_article.id=mytest_config.id
+
+
+without join
+SELECT * from mytest_article a, mytest_tags b, mytest_tagarticle c where c.tag = b.id and c.article = a.id
+
+without join tag name
+SELECT * from mytest_article a, mytest_tags b, mytest_tagarticle c where c.tag = b.id and c.article = a.id and b.name='ddd'
+
+with JOIN
+SELECT `mytest_article`.*, `mytest_tags`.`name`, `mytest_tagarticle`.`tag`, `mytest_tagarticle`.`article`
+FROM `mytest_tagarticle`
+LEFT JOIN `mytest_article`
+    ON `mytest_article`.id = `mytest_tagarticle`.`article`
+
+LEFT JOIN `mytest_tags`
+    ON `mytest_tags`.id =`mytest_tagarticle`.`tag`
+
+    with tag name
+
+    SELECT `mytest_article`.*, `mytest_tags`.`name`, `mytest_tagarticle`.`tag`, `mytest_tagarticle`.`article`FROM `mytest_tagarticle`
+    LEFT JOIN `mytest_article`
+        ON `mytest_article`.id = `mytest_tagarticle`.`article`
+
+    LEFT JOIN `mytest_tags`
+        ON `mytest_tags`.id =`mytest_tagarticle`.`tag` where `mytest_tags`.`name`='ddd'
