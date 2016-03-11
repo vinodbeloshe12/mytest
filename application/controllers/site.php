@@ -1138,33 +1138,20 @@ $this->load->view("redirect",$data);
 
 public function copyfiles()
 {
-
-	$file = 'mytest.sql';
-$newfile = 'mytestcopy.sql';
-
-if (!copy($file, $newfile)) {
-    echo "failed to copy $file...\n";
+	$data["message"]=$this->menu_model->copyfiles();
+	$data["redirect"]="site/viewconfig";
+	$this->load->view("redirect",$data);
+	//$this->load->view("json",$data);
 }
+public function copyfolder()
+{
+	$data["message"]=$this->menu_model->copyfolder();
+	$data["redirect"]="site/viewconfig";
+	$this->load->view("redirect",$data);
+	//$this->load->view("json",$data);
 }
 
-	function recurse_copy() {
-		$src = "uploads/";
-		$dst = "uploadsbackup/";
-    $dir = opendir($src);
-    @mkdir($dst);
-    while(false !== ( $file = readdir($dir)) ) {
-        if (( $file != '.' ) && ( $file != '..' )) {
-            if ( is_dir($src . '/' . $file) ) {
-                recurse_copy($src . '/' . $file,$dst . '/' . $file);
-            }
-            else {
-                copy($src . '/' . $file,$dst . '/' . $file);
-            }
-        }
-    }
-    closedir($dir);
 
-}
 
 }
 ?>

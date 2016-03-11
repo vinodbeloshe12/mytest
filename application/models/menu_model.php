@@ -4,7 +4,7 @@ if ( !defined( 'BASEPATH' ) )
 class Menu_model extends CI_Model
 {
 	public function create($name,$description,$keyword,$url,$linktype,$parentmenu,$menuaccess,$isactive,$order,$icon)
-	{ 
+	{
 		date_default_timezone_set('Asia/Calcutta');
 		$data  = array(
 			'description' =>$description,
@@ -18,7 +18,7 @@ class Menu_model extends CI_Model
 			'icon' => $icon,
 		);
 		//print_r($data);
-		
+
 		$query=$this->db->insert( 'menu', $data );
 		$menuid=$this->db->insert_id();
 		if(! empty($menuaccess)) {
@@ -39,9 +39,9 @@ class Menu_model extends CI_Model
 	function viewmenu()
 	{
 		$query="SELECT `menu`.`id` as `id`,`menu`.`name` as `name`,`menu`.`description` as `description`,`menu`.`keyword` as `keyword`,`menu`.`url` as `url`,`menu2`.`name` as `parentmenu`,`menu`.`linktype` as `linktype`,`menu`.`icon`,`menu`.`order` FROM `menu`
-		LEFT JOIN `menu` as `menu2` ON `menu2`.`id` = `menu`.`parent` 
+		LEFT JOIN `menu` as `menu2` ON `menu2`.`id` = `menu`.`parent`
 		ORDER BY `menu`.`order` ASC";
-	   
+
 		$query=$this->db->query($query)->result();
 		return $query;
 	}
@@ -55,10 +55,10 @@ class Menu_model extends CI_Model
 		{
 			$query['menuaccess'][]=$row->access;
 	    }
-		
+
 		return $query;
 	}
-	
+
 	public function edit($id,$name,$description,$keyword,$url,$linktype,$parentmenu,$menuaccess,$isactive,$order,$icon)
 	{
 		$data  = array(
@@ -74,7 +74,7 @@ class Menu_model extends CI_Model
 		);
 		$this->db->where( 'id', $id );
 		$this->db->update( 'menu', $data );
-		
+
 		$this->db->query("DELETE FROM `menuaccess` WHERE `menu`='$id'");
 		if(! empty($menuaccess)) {
 		foreach($menuaccess as  $row)
@@ -84,7 +84,7 @@ class Menu_model extends CI_Model
 				'access' => $row,
 			);
 			$query=$this->db->insert( 'menuaccess', $data );
-			
+
 		} }
 		return 1;
 	}
@@ -99,7 +99,7 @@ class Menu_model extends CI_Model
 		$return=array(
 		"" => ""
 		);
-		
+
 		foreach($query as $row)
 		{
 			$return[$row->id]=$row->name;
@@ -110,11 +110,11 @@ class Menu_model extends CI_Model
 	{
         $accesslevel=$this->session->userdata( 'accesslevel' );
 		$query="SELECT `menu`.`id` as `id`,`menu`.`name` as `name`,`menu`.`description` as `description`,`menu`.`keyword` as `keyword`,`menu`.`url` as `url`,`menu2`.`name` as `parentmenu`,`menu`.`linktype` as `linktype`,`menu`.`icon` FROM `menu`
-		LEFT JOIN `menu` as `menu2` ON `menu2`.`id` = `menu`.`parent`  
+		LEFT JOIN `menu` as `menu2` ON `menu2`.`id` = `menu`.`parent`
         INNER  JOIN `menuaccess` ON  `menuaccess`.`menu`=`menu`.`id`
 		WHERE `menu`.`parent`=0 AND `menuaccess`.`access`='$accesslevel'
 		ORDER BY `menu`.`order` ASC";
-	   
+
 		$query=$this->db->query($query)->result();
 		return $query;
 	}
@@ -123,29 +123,29 @@ class Menu_model extends CI_Model
 		$query="SELECT `menu`.`id` as `id`,`menu`.`name` as `name`,`menu`.`description` as `description`,`menu`.`keyword` as `keyword`,`menu`.`url` as `url`,`menu`.`linktype` as `linktype`,`menu`.`icon` FROM `menu`
 		WHERE `menu`.`parent` = '$parent'
 		ORDER BY `menu`.`order` ASC";
-	   
+
 		$query=$this->db->query($query)->result();
 		return $query;
 	}
 	function getpages($parent)
-	{ 
+	{
 		$query="SELECT `menu`.`id` as `id`,`menu`.`name` as `name`,`menu`.`url` as `url` FROM `menu`
 		WHERE `menu`.`parent` = '$parent'
 		ORDER BY `menu`.`order` ASC";
-	   
+
 		$query2=$this->db->query($query)->result();
 		$url = array();
 		foreach($query2 as $row)
 		{
 			$pieces = explode("/", $row->url);
-					
+
 			if(empty($pieces) || !isset($pieces[1]))
 			{
 				$page2="";
 			}
 			else
 				$page2=$pieces[1];
-				
+
 			$url[]=$page2;
 		}
 		//print_r($url);
@@ -168,7 +168,7 @@ class Menu_model extends CI_Model
         $todaysdate=date("Y-m-d");
         $firstdate=date('Y-m-01', strtotime($todaysdate));
        return $firstdate;
-    } 
+    }
     function getLastDate()
     {
         $todaysdate=date("Y-m-d");
@@ -187,7 +187,64 @@ class Menu_model extends CI_Model
        $query=$this->db->query("SELECT `id`, `name`, `logo` FROM `title` WHERE `id`=1")->row();
        return $query;
     }
-   
-    
+
+		function copyfiles()
+		{
+			$src = "uploads/";
+			$dst = "uploadsbackup/";
+			@mkdir($dst,0777);
+			$query = $this->db->query("SELECT `image` FROM `mytest_article`")->result();
+			foreach($query as $value)
+			{
+				copy($src.$value->image,$dst.$value->image);
+			}
+			//return $query;
+		}
+
+			function copyfolder() {
+				$rmsrc= "uploads";
+				$src = "uploadsbackup";
+				$dst = "uploads";
+
+				//remove main uploads
+				if (is_dir($rmsrc)) {
+					$objects = scandir($rmsrc);
+					foreach ($objects as $object) {
+						if ($object != "." && $object != "..") {
+							if (filetype($rmsrc."/".$object) == "dir") rrmdir($rmsrc."/".$object); else unlink($rmsrc."/".$object);
+						}
+					}
+					reset($objects);
+					rmdir($rmsrc);
+				}
+
+		    $dir = opendir($src);
+		    @mkdir($dst,0777);
+		    while(false !== ( $file = readdir($dir)) ) {
+		        if (( $file != '.' ) && ( $file != '..' )) {
+		            if ( is_dir($src . '/' . $file) ) {
+		                recurse_copy($src . '/' . $file,$dst . '/' . $file);
+		            }
+		            else {
+		                copy($src . '/' . $file,$dst . '/' . $file);
+		            }
+		        }
+		    }
+		    closedir($dir);
+				//remove backup uploads
+				if (is_dir($src)) {
+					$objects = scandir($src);
+					foreach ($objects as $object) {
+						if ($object != "." && $object != "..") {
+							if (filetype($src."/".$object) == "dir") rrmdir($src."/".$object); else unlink($src."/".$object);
+						}
+					}
+					reset($objects);
+					rmdir($src);
+				}
+		}
+
+
+
 }
 ?>
