@@ -40,7 +40,13 @@ function getarticlebytagname($name){
 return $query;
 }
 
+function getalltag(){
 
+  
+         $query=$this->db->query("SELECT *from mytest_tags")->result();
+
+      return $query;
+}
 //tagsbyname
 
 

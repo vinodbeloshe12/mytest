@@ -31,6 +31,43 @@
     <label>Content</label>
   </div>
 </div>
+    <div class="row">
+  <div class="input-field col m6 s12">
+<?php
+$brand_list = array(
+        'small'         => 'Small Shirt',
+        'med'           => 'Medium Shirt',
+        'large'         => 'Large Shirt',
+        'xlarge'        => 'Extra Large Shirt',
+);
+
+$shirts_on_sale = array('small', 'large');
+
+
+/*
+        Would produce:
+
+        <select name="shirts">
+                <option value="small">Small Shirt</option>
+                <option value="med">Medium  Shirt</option>
+                <option value="large" selected="selected">Large Shirt</option>
+                <option value="xlarge">Extra Large Shirt</option>
+        </select>
+*/
+$mtags = array('food','b');
+//echo form_dropdown('shirts', $options, 'large');
+//echo form_dropdown(multiple ,'brand[]', $brand_list, $mtags, 'id="brand"');
+
+$array = array();
+echo form_dropdown('shirts', $brand_list, $array, 'multiple'); 
+
+
+ ?>
+
+
+    <label>Tags</label>
+  </div>
+</div>
 
 
 

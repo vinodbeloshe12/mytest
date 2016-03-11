@@ -1,6 +1,8 @@
 <div class="row">
 <div class="col s12">
 <div class="row">
+  <a class="btn-floating btn-large waves-effect waves-light blue darken-4 tooltipped" href="<?php echo site_url("site/copyfiles"); ?>"data-position="top" data-delay="50" data-tooltip="Create"><i class="material-icons">Copy Files</i></a>
+  <a class="btn-floating btn-large waves-effect waves-light blue darken-4 tooltipped" href="<?php echo site_url("site/recurse_copy"); ?>"data-position="top" data-delay="50" data-tooltip="Create"><i class="material-icons">folder</i></a>
 <div class="col s12 drawchintantable">
 <?php $this->chintantable->createsearch(" List of config");?>
 <table class="highlight responsive-table">

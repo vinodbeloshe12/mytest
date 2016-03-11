@@ -13,6 +13,26 @@ return  0;
 else
 return  $id;
 }
+
+public function createart($title,$content,$image)
+{
+ $data  = array(
+  'title' => $title,
+    'image'=> $image,
+    'content' => $content
+  );
+$query=$this->db->insert( 'mytest_article', $data );
+ $id=$this->db->insert_id();
+
+  if(!$query)
+    return  0;
+  else
+    return  1;
+}
+
+
+
+
 public function beforeedit($id)
 {
 $this->db->where("id",$id);

@@ -36,6 +36,12 @@ $id=$this->input->get_post("id");
 $data["message"]=$this->article_model->getsinglearticle($id);
 $this->load->view("json",$data);
 }
+public function responseCheck()
+{
+$id= $_GET;
+$data["message"]=$id;
+$this->load->view("json",$data);
+}
 
 
 public function getarticlebytagname()
@@ -142,6 +148,7 @@ $orderorder=$this->input->get_post("orderorder");
 $maxrow=$this->input->get_post("maxrow");
 if($maxrow=="")
 {
+  // getalltags
 }
 if($orderby=="")
 {
@@ -151,12 +158,22 @@ $orderorder="ASC";
 $data["message"]=$this->chintantable->query($pageno,$maxrow,$orderby,$orderorder,$search,$elements,"FROM `mytest_tags`");
 $this->load->view("json",$data);
 }
+
 public function getsingletags()
 {
 $id=$this->input->get_post("id");
 $data["message"]=$this->tags_model->getsingletags($id);
 $this->load->view("json",$data);
 }
+
+// public function getalltags()
+// {
+//
+// $data["message"]=$this->tags_model->getalltag();
+// $this->load->view("json",$data);
+// }
+
+
 function getalltagarticle()
 {
 $elements=array();

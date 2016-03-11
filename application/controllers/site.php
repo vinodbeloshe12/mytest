@@ -20,6 +20,9 @@ class Site extends CI_Controller
 		if(!in_array($accesslevel,$access))
 			redirect( base_url() . 'index.php/site?alerterror=You do not have access to this page. ', 'refresh' );
 	}
+
+
+
     public function getOrderingDone()
     {
         $orderby=$this->input->get("orderby");
@@ -674,7 +677,7 @@ function createarticlesubmit()
 
 		}
 
-		if($this->user_model->createart($title,$content,$image)==0)
+		if($this->article_model->createart($title,$content,$image)==0)
 		$data['alerterror']="New article could not be created.";
 		else
 		$data['alertsuccess']="Article created Successfully.";
@@ -1131,6 +1134,36 @@ $this->checkaccess($access);
 $this->tagarticle_model->delete($this->input->get("id"));
 $data["redirect"]="site/viewtagarticle";
 $this->load->view("redirect",$data);
+}
+
+public function copyfiles()
+{
+
+	$file = 'mytest.sql';
+$newfile = 'mytestcopy.sql';
+
+if (!copy($file, $newfile)) {
+    echo "failed to copy $file...\n";
+}
+}
+
+	function recurse_copy() {
+		$src = "uploads/";
+		$dst = "uploadsbackup/";
+    $dir = opendir($src);
+    @mkdir($dst);
+    while(false !== ( $file = readdir($dir)) ) {
+        if (( $file != '.' ) && ( $file != '..' )) {
+            if ( is_dir($src . '/' . $file) ) {
+                recurse_copy($src . '/' . $file,$dst . '/' . $file);
+            }
+            else {
+                copy($src . '/' . $file,$dst . '/' . $file);
+            }
+        }
+    }
+    closedir($dir);
+
 }
 
 }
