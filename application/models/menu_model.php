@@ -193,11 +193,22 @@ class Menu_model extends CI_Model
 			$src = "uploads/";
 			$dst = "uploadsbackup/";
 			@mkdir($dst,0777);
-			$query = $this->db->query("SELECT `image` FROM `mytest_article`")->result();
-			foreach($query as $value)
-			{
-				copy($src.$value->image,$dst.$value->image);
-			}
+			$mytables = $this->db->query("SELECT DISTINCT TABLE_NAME
+    FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE COLUMN_NAME IN ('image')
+        AND TABLE_SCHEMA='mytest'")->result();
+		print_r($mytables);
+// 		foreach($mytables as $tables)
+// 		{
+//
+// 				$imgquery = $this->db->query("SELECT `image` FROM `$tables->TABLE_NAME`")->result();
+// 			foreach($imgquery as $imgvalue)
+// 			{
+// 				echo $imgvalue->image;
+// 				//copy($src.$imgvalue->image,$dst.$imgvalue->image);
+// 			}
+//
+// }
 			//return $query;
 		}
 
