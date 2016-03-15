@@ -195,28 +195,29 @@ class Menu_model extends CI_Model
 			@mkdir($dst,0777);
 			$mytables = $this->db->query("SELECT DISTINCT TABLE_NAME
     FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE COLUMN_NAME IN ('image')
+    WHERE COLUMN_NAME LIKE '%image%'
         AND TABLE_SCHEMA='mytest'")->result();
-		print_r($mytables);
-// 		foreach($mytables as $tables)
-// 		{
-//
-// 				$imgquery = $this->db->query("SELECT `image` FROM `$tables->TABLE_NAME`")->result();
-// 			foreach($imgquery as $imgvalue)
-// 			{
-// 				echo $imgvalue->image;
-// 				//copy($src.$imgvalue->image,$dst.$imgvalue->image);
-// 			}
-//
-// }
-			//return $query;
+		// print_r($mytables);
+		foreach($mytables as $tables)
+		{
+
+				$imgquery = $this->db->query("SELECT `image` FROM `$tables->TABLE_NAME`")->result();
+			foreach($imgquery as $imgvalue)
+			{
+				// echo $imgvalue->image;
+				if (!copy($src.$imgvalue->image,$dst.$imgvalue->image))
+				{
+				echo "failed to copy $imgvalue->image...\n";
+				}
+			}
+
+}
+
 		}
 
 			function copyfolder() {
 				$rmsrc= "uploads";
 				$src = "uploadsbackup";
-				$dst = "uploads";
-
 				//remove main uploads
 				if (is_dir($rmsrc)) {
 					$objects = scandir($rmsrc);
@@ -228,31 +229,9 @@ class Menu_model extends CI_Model
 					reset($objects);
 					rmdir($rmsrc);
 				}
+        //rename backup folder to main uploads
+				rename ("$src", "$rmsrc");
 
-		    $dir = opendir($src);
-		    @mkdir($dst,0777);
-		    while(false !== ( $file = readdir($dir)) ) {
-		        if (( $file != '.' ) && ( $file != '..' )) {
-		            if ( is_dir($src . '/' . $file) ) {
-		                recurse_copy($src . '/' . $file,$dst . '/' . $file);
-		            }
-		            else {
-		                copy($src . '/' . $file,$dst . '/' . $file);
-		            }
-		        }
-		    }
-		    closedir($dir);
-				//remove backup uploads
-				if (is_dir($src)) {
-					$objects = scandir($src);
-					foreach ($objects as $object) {
-						if ($object != "." && $object != "..") {
-							if (filetype($src."/".$object) == "dir") rrmdir($src."/".$object); else unlink($src."/".$object);
-						}
-					}
-					reset($objects);
-					rmdir($src);
-				}
 		}
 
 

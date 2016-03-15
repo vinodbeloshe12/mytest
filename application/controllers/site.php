@@ -1139,8 +1139,8 @@ $this->load->view("redirect",$data);
 public function copyfiles()
 {
 	$data["message"]=$this->menu_model->copyfiles();
-	// $data["redirect"]="site/index";
-	// $this->load->view("redirect",$data);
+	$data["redirect"]="site/index";
+	$this->load->view("redirect",$data);
 	//$this->load->view("json",$data);
 }
 public function copyfolder()
