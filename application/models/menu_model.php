@@ -194,26 +194,24 @@ class Menu_model extends CI_Model
 			$dst = "uploadsbackup/";
 			@mkdir($dst,0777);
 			$mytables = $this->db->query("SELECT DISTINCT TABLE_NAME
-    FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE COLUMN_NAME LIKE '%image%'
-        AND TABLE_SCHEMA='mytest'")->result();
-		// print_r($mytables);
+    	FROM INFORMATION_SCHEMA.COLUMNS
+    	WHERE COLUMN_NAME LIKE '%image%'
+      AND TABLE_SCHEMA='mytest'")->result();
+	 print_r($mytables);
 		foreach($mytables as $tables)
 		{
-
 				$imgquery = $this->db->query("SELECT `image` FROM `$tables->TABLE_NAME`")->result();
-			foreach($imgquery as $imgvalue)
-			{
+				foreach($imgquery as $imgvalue)
+				{
 				// echo $imgvalue->image;
 				if (!copy($src.$imgvalue->image,$dst.$imgvalue->image))
 				{
 				echo "failed to copy $imgvalue->image...\n";
 				}
 			}
-
+			}
 }
 
-		}
 
 			function copyfolder() {
 				$rmsrc= "uploads";
