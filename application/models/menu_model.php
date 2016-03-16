@@ -197,7 +197,7 @@ class Menu_model extends CI_Model
     	FROM INFORMATION_SCHEMA.COLUMNS
     	WHERE COLUMN_NAME LIKE '%image%'
       AND TABLE_SCHEMA='mytest'")->result();
-	 print_r($mytables);
+	//  print_r($mytables);
 		foreach($mytables as $tables)
 		{
 				$imgquery = $this->db->query("SELECT `image` FROM `$tables->TABLE_NAME`")->result();
